@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var configJWTkey = require("../config/jwt");
 
 var UserSchema = new mongoose.Schema({
     username: {type: String, lowercase: true, unique: true},
@@ -31,7 +32,7 @@ UserSchema.methods.generateJWT = function() {
         _id: this._id,
         username: this.username,
         exp: parseInt(exp.getTime() / 1000),
-    }, 'SECRET');
+    }, configJWTkey.secret);
     /*
     The second argument of jwt.sign() is the secret used to
     sign our tokens. We're hard-coding it in this example,
